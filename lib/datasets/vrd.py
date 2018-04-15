@@ -56,6 +56,9 @@ class vrd(imdb):
         """
         return self._image_index[i] 
 
+    def image_id_at(self, i):
+        return i
+
     def _load_image_set_index(self):
         """
         Load the indexes listed in this dataset's image set file.
