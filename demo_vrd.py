@@ -46,7 +46,7 @@ class detector():
   def __init__(self):
     self.args = EasyDict()
     self.args.dataset = 'vrd'
-    self.args.cfg_file = 'cfgs/vgg16.yml'
+    self.args.cfg_file = '/home/liangkongming/code/faster-rcnn.pytorch/cfgs/vgg16.yml'
     self.args.net = 'vgg16'
     self.args.load_dir = '/home/liangkongming/code/faster-rcnn.pytorch/models/vgg16/vrd/faster_rcnn_1_20_7559.pth'
     self.args.cuda = True
@@ -95,16 +95,16 @@ class detector():
 
     # ship to cuda
     if self.args.cuda > 0:
-      self.im_data = im_data.cuda()
-      self.im_info = im_info.cuda()
-      self.num_boxes = num_boxes.cuda()
-      self.gt_boxes = gt_boxes.cuda()
+      self.im_data = self.im_data.cuda()
+      self.im_info = self.im_info.cuda()
+      self.num_boxes = self.num_boxes.cuda()
+      self.gt_boxes = self.gt_boxes.cuda()
 
     # make variable
-    self.im_data = Variable(im_data, volatile=True)
-    self.im_info = Variable(im_info, volatile=True)
-    self.num_boxes = Variable(num_boxes, volatile=True)
-    self.gt_boxes = Variable(gt_boxes, volatile=True)
+    self.im_data = Variable(self.im_data, volatile=True)
+    self.im_info = Variable(self.im_info, volatile=True)
+    self.num_boxes = Variable(self.num_boxes, volatile=True)
+    self.gt_boxes = Variable(self.gt_boxes, volatile=True)
 
     if self.args.cuda > 0:
       cfg.CUDA = True
@@ -151,7 +151,7 @@ class detector():
 # def detect_im():
 # if __name__ == '__main__':
 
-  def det_im(im_file = '/home/liangkongming/code/faster-rcnn.pytorch/images/vrd_test1.jpg'):
+  def det_im(self, im_file = '/home/liangkongming/code/faster-rcnn.pytorch/images/vrd_test1.jpg'):
     vis = True
     max_per_image = 100
     thresh = 0.05 
@@ -212,7 +212,7 @@ class detector():
               box_deltas = box_deltas.view(1, -1, 4 * len(self.vrd_classes))
 
         pred_boxes = bbox_transform_inv(boxes, box_deltas, 1)
-        self.pred_boxes = clip_boxes(pred_boxes, im_info.data, 1)
+        pred_boxes = clip_boxes(pred_boxes, self.im_info.data, 1)
     else:
         # Simply repeat the boxes, once for each class
         pred_boxes = np.tile(boxes, (1, scores.shape[1]))
