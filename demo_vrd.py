@@ -229,7 +229,7 @@ class detector():
     if vis:
       im2show = np.copy(im)
     res = {}
-    res['box'] = np.zeros(0,4)
+    res['box'] = np.zeros((0,4))
     res['cls'] = []
     res['confs'] = []
     res_ix = 0

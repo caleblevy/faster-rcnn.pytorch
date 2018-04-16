@@ -68,11 +68,10 @@ def res_detections(im, class_ix, class_name, dets, res, res_ix, thresh=0.8):
         if score > thresh:
             cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2)
             cv2.putText(im, '%s%d: %.3f' % (class_name, res_ix, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
-                        1.0, (0, 0, 255), thickness=1)
-            res['box'] = np.vstack((res['box'], np.zeros(0,4)))
+                        2.0, (0, 0, 255), thickness=2)
+            res['box'] = np.vstack((res['box'], dets[i, :4]))
             res['cls'].append(class_ix-1)
             res['confs'].append(score)
-            res.append(('%s%d'%(class_name, res_ix), score))
             res_ix += 1
     return im
 
