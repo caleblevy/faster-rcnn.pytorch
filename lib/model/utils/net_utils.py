@@ -67,9 +67,9 @@ def res_detections(im, class_name, dets, res, res_ix, thresh=0.8):
         score = dets[i, -1]
         if score > thresh:
             cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2)
-            cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
+            cv2.putText(im, '%s%d: %.3f' % (class_name, res_ix, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
                         1.0, (0, 0, 255), thickness=1)
-            res.append('%s%d'%(class_name, res_ix))
+            res.append(('%s%d'%(class_name, res_ix), score))
             res_ix += 1
     return im
 

@@ -9,6 +9,7 @@ from __future__ import print_function
 
 import _init_paths
 import os
+import os.path as osp
 import sys
 import numpy as np
 import argparse
@@ -30,7 +31,7 @@ from model.utils.config import cfg, cfg_from_file, cfg_from_list, get_output_dir
 from model.rpn.bbox_transform import clip_boxes
 from model.nms.nms_wrapper import nms
 from model.rpn.bbox_transform import bbox_transform_inv
-from model.utils.net_utils import save_net, load_net, vis_detections
+from model.utils.net_utils import save_net, load_net, res_detections
 from model.utils.blob import im_list_to_blob
 from model.faster_rcnn.vgg16 import vgg16
 from model.faster_rcnn.resnet import resnet
@@ -151,13 +152,14 @@ class detector():
 # def detect_im():
 # if __name__ == '__main__':
 
-  def det_im(self, im_file = '/home/liangkongming/code/faster-rcnn.pytorch/images/vrd_test1.jpg'):
+  def det_im(self, im_file = 'vrd_test1.jpg'):
+    web_path = '/home/liangkongming/code/python_utils/experiment/vrd_end2end/demo/static/tmp'
     vis = True
     max_per_image = 100
     thresh = 0.05 
     total_tic = time.time()    
     # im = cv2.imread(im_file)
-    im_in = np.array(imread(im_file))
+    im_in = np.array(imread(osp.join(web_path, '%s.jpg'%im_file)))
     if len(im_in.shape) == 2:
       im_in = im_in[:,:,np.newaxis]
       im_in = np.concatenate((im_in,im_in,im_in), axis=2)
@@ -253,7 +255,7 @@ class detector():
     sys.stdout.write('im_detect: {:.3f}s {:.3f}s   \r'.format(detect_time, nms_time))
     sys.stdout.flush()
     if vis:
-      result_path = os.path.join('/home/liangkongming/code/faster-rcnn.pytorch/images/vrd_test1_det.jpg')
+      result_path = osp.join(web_path, '%s_det.jpg'%im_file)
       cv2.imwrite(result_path, im2show)
     return res
 
