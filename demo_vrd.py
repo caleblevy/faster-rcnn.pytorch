@@ -228,8 +228,11 @@ class detector():
     misc_tic = time.time()
     if vis:
       im2show = np.copy(im)
-    res = []
-    res_ix = 0  
+    res = {}
+    res['box'] = np.zeros(0,4)
+    res['cls'] = []
+    res['confs'] = []
+    res_ix = 0
     for j in xrange(1, len(self.vrd_classes)):
       inds = torch.nonzero(scores[:,j]>thresh).view(-1)
       # if there is det
@@ -247,7 +250,7 @@ class detector():
         keep = nms(cls_dets, cfg.TEST.NMS, force_cpu=not cfg.USE_GPU_NMS)
         cls_dets = cls_dets[keep.view(-1).long()]        
         if vis:
-          im2show = res_detections(im2show, self.vrd_classes[j], cls_dets.cpu().numpy(), res, res_ix, 0.5)
+          im2show = res_detections(im2show, j, self.vrd_classes[j], cls_dets.cpu().numpy(), res, res_ix, 0.5)
 
     misc_toc = time.time()
     nms_time = misc_toc - misc_tic
